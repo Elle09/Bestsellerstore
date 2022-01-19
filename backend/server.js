@@ -15,6 +15,20 @@ connectDB()
 const app = express()
 
 app.use(express.json())
+const users = [
+  {
+    id: "1",
+    username: "john",
+    password: "john999",
+    isAdmin: true,
+  },
+  {
+    id: "2",
+    username: "jane",
+    password: "Jane999",
+    isAdmin: false,
+  },
+];
 
 app.use('/api/products',productRoutes)
 app.use('/api/users', userRoutes)
