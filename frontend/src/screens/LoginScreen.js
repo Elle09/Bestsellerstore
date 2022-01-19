@@ -61,28 +61,7 @@ const LoginScreen = ({ location, history }) => {
       }
     );
   
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const res = await axios.post("/login", { username, password });
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  
-    const handleDelete = async (id) => {
-      setSuccess(false);
-      setError(false);
-      try {
-        await axiosJWT.delete("/users/" + id, {
-          headers: { authorization: "Bearer " + user.accessToken },
-        });
-        setSuccess(true);
-      } catch (err) {
-        setError(true);
-      }
-    };
+    
 
     return (
         <FormContainer>
