@@ -6,6 +6,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
+import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 const LoginScreen = ({ location, history }) => {
     const [email, setEmail] = useState('')
@@ -28,6 +30,59 @@ const LoginScreen = ({ location, history }) => {
       e.preventDefault()
       dispatch(login(email, password))
     }
+    const refreshToken = async () => {
+      try {
+        const res = await axios.post("/refresh", { token: user.refreshToken });
+        setUser({
+          ...user,
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        });
+        return res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    const axiosJWT = axios.create()
+  
+    axiosJWT.interceptors.request.use(
+      async (config) => {
+        let currentDate = new Date();
+        const decodedToken = jwt_decode(user.accessToken);
+        if (decodedToken.exp * 1000 < currentDate.getTime()) {
+          const data = await refreshToken();
+          config.headers["authorization"] = "Bearer " + data.accessToken;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const res = await axios.post("/login", { username, password });
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    const handleDelete = async (id) => {
+      setSuccess(false);
+      setError(false);
+      try {
+        await axiosJWT.delete("/users/" + id, {
+          headers: { authorization: "Bearer " + user.accessToken },
+        });
+        setSuccess(true);
+      } catch (err) {
+        setError(true);
+      }
+    };
 
     return (
         <FormContainer>
