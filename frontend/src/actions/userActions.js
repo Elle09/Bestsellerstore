@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookie from 'js-cookie'
 import {
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
@@ -48,7 +49,7 @@ import {
         payload: data,
       })
   
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      Cookie.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
       dispatch({
         type: USER_LOGIN_FAIL,
@@ -61,8 +62,8 @@ import {
   }
 
   export const logout = () => (dispatch) => {
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem('cartItems')
+    Cookie.removeItem('userInfo')
+    Cookie.removeItem('cartItems')
     
     dispatch({ type: USER_LOGOUT })
    
@@ -98,7 +99,7 @@ import {
         payload: data,
       })
   
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      Cookie.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
@@ -174,7 +175,7 @@ import {
         type: USER_LOGIN_SUCCESS,
         payload: data,
       })
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      Cookie.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
       const message =
         error.response && error.response.data.message

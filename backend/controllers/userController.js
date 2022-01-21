@@ -1,6 +1,6 @@
 import User from '../models/userModel.js'
 import asyncHandler from 'express-async-handler'
-import generateToken from '../utils/generateToken.js'
+import {getToken} from '../utils/generateToken.js'
 
 const authUser = asyncHandler(async (req, res) => {
 
@@ -13,7 +13,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id)
+      token: getToken(user._id)
     })
   } else {
     res.status(401)
@@ -63,7 +63,7 @@ const authUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token: generateToken(user._id),
+        token: getToken(user._id),
       })
     } else {
       res.status(400)
@@ -88,7 +88,7 @@ const authUser = asyncHandler(async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser._id),
+        token: getToken(updatedUser._id),
       })
     } else {
       res.status(404)
