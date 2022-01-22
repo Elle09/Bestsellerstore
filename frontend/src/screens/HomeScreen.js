@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import SearchBox from './searc'
+import {Route} from 'react-router-dom'
 
 const HomeScreen = () => {
 
@@ -22,6 +24,11 @@ const HomeScreen = () => {
     return (
         <>
         <h1>Bestsellers</h1>
+        <Route
+              render={({ history }) => (
+                <SearchBox history={history}></SearchBox>
+              )}
+        ></Route>
         {loading ? (
           <Loader/>
         ) : error ? (
@@ -34,6 +41,7 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
+
         )}
         
         </>
